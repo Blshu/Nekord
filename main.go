@@ -6,7 +6,8 @@ import (
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver" // 👈 AssetServer 전용 패키지 추가
+	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 //go:embed all:frontend/dist
@@ -16,20 +17,18 @@ func main() {
 	app := NewApp()
 
 	err := wails.Run(&options.App{
-		Title:  "Nekord - The nekost Unofficial Discord Client",
-		Width:  1100,
+		Title:  "Nekord",
+		Width:  1280,
 		Height: 720,
-		AssetServer: &assetserver.Options{
+		AssetServer: &assetserver.Options{ // 👈 options.AssetServer 대신 assetserver.Options 사용
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 30, G: 31, B: 34, A: 1},
-		OnStartup:        app.startup,
+		OnStartup: app.startup,
 		OnDomReady: func(ctx context.Context) {
-			_ = app.InjectPlugins()
-		},
-		// 시작할 때 개발자 도구 강제로 열기
-		Debug: options.Debug{
-			OpenInspectorOnStartup: true,
+			jsCode := app.InjectPlugins()
+			if jsCode != "" {
+				wailsRuntime.WindowExecJS(ctx, jsCode)
+			}
 		},
 		Bind: []interface{}{
 			app,
