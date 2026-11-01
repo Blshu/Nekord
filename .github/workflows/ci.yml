@@ -1,0 +1,45 @@
+name: Nekord CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  check-and-lint:
+    name: Check Code & Syntax
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 1. Go 환경 설정 및 백엔드 문법/빌드 검사
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+
+      - name: Verify Go Modules
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+
+      - name: Go Vet & Build Check
+        run: |
+          go vet ./...
+          go build -v ./...
+
+      # 2. Node.js 환경 설정 및 플러그인 JS 구문 검증
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check Plugins JS Syntax
+        run: |
+          echo "Checking JavaScript syntax in ./plugins..."
+          find ./plugins -name "*.js" -exec node --check {} +
+          echo "All plugins syntax verified! 🐾"

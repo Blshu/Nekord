@@ -1,0 +1,22 @@
+# Wails 빌드 바이너리 및 프론트엔드 dist
+build/bin/
+frontend/dist/
+
+# Go 바이너리 & 캐시
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Node 모듈
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS 임시 파일 & 에디터 설정
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
