@@ -3,6 +3,7 @@
 > **The nekost Unofficial Discord Client**  
 > Wails(Go + Web) 기반의 경량화 모듈형 커스텀 디스코드 클라이언트
 
+![Nekord CI](https://github.com/Blshu/Nekord/actions/workflows/ci.yml/badge.svg)
 ![Go](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)
 ![Wails](https://img.shields.io/badge/Wails-v2-DF0000?style=flat&logo=wails)
 ![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
