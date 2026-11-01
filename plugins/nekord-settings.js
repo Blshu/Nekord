@@ -1,5 +1,5 @@
 (function () {
-  console.log("%c[Nekord] Core Plugin Engine & Registry Ready 🐾", "color: #f47fff; font-weight: bold;");
+  console.log("%c[Nekord] Core Plugin Engine & Registry Ready", "color: #f47fff; font-weight: bold;");
 
   const memoryStorage = {};
   function safeGet(key) {
@@ -80,135 +80,135 @@
   };
 
   // 모달 렌더링
-  window.nekordOpenModal = function () {
-    let overlay = document.getElementById("nekord-modal-overlay");
-    if (overlay) overlay.remove();
+ window.nekordOpenModal = function () {
+  let overlay = document.getElementById("nekord-modal-overlay");
+  if (overlay) overlay.remove();
 
-    overlay = document.createElement("div");
-    overlay.id = "nekord-modal-overlay";
-    overlay.style.cssText = `
-      position: fixed !important;
-      inset: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      background: rgba(0, 0, 0, 0.75) !important;
-      backdrop-filter: blur(4px) !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      z-index: 2147483647 !important;
-      pointer-events: auto !important;
-    `;
+  overlay = document.createElement("div");
+  overlay.id = "nekord-modal-overlay";
+  overlay.style.cssText = `
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(4px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 2147483647 !important;
+    pointer-events: auto !important;
+  `;
 
-    const pluginEntries = Array.from(window.Nekord.plugins.values());
-    let pluginListHtml = "";
+  const pluginEntries = Array.from(window.Nekord.plugins.values());
+  let pluginListHtml = "";
 
-    if (pluginEntries.length === 0) {
-      pluginListHtml = `<div style="color: #949ba4; font-size: 13px; text-align: center; padding: 12px;">등록된 플러그인이 없다냥 🐾</div>`;
-    } else {
-      pluginListHtml = pluginEntries.map(p => {
-        const checked = p.enabled ? "checked" : "";
-        const settingsBtn = p.hasSettings ? `
-          <button class="nekord-plugin-cfg-btn" data-plugin-id="${p.id}" style="background: rgba(255,255,255,0.08); border: none; color: #dbdee1; border-radius: 4px; padding: 4px 8px; font-size: 13px; cursor: pointer; margin-right: 10px;">
-            ⚙️
-          </button>
-        ` : "";
+  if (pluginEntries.length === 0) {
+    pluginListHtml = `<div style="color: #949ba4; font-size: 13px; text-align: center; padding: 12px;">No plugins registered yet 🐾</div>`;
+  } else {
+    pluginListHtml = pluginEntries.map(p => {
+      const checked = p.enabled ? "checked" : "";
+      const settingsBtn = p.hasSettings ? `
+        <button class="nekord-plugin-cfg-btn" data-plugin-id="${p.id}" style="background: rgba(255,255,255,0.08); border: none; color: #dbdee1; border-radius: 4px; padding: 4px 8px; font-size: 13px; cursor: pointer; margin-right: 10px;">
+          ⚙️
+        </button>
+      ` : "";
 
-        return `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-            <div style="flex: 1; padding-right: 10px;">
-              <div style="color: #fff; font-size: 14px; font-weight: 600;">
-                ${p.name} <span style="font-size: 11px; color: #f47fff; font-weight: normal;">by ${p.author}</span>
-              </div>
-              <div style="color: #949ba4; font-size: 12px; margin-top: 2px;">${p.description}</div>
+      return `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="flex: 1; padding-right: 10px;">
+            <div style="color: #fff; font-size: 14px; font-weight: 600;">
+              ${p.name} <span style="font-size: 11px; color: #f47fff; font-weight: normal;">by ${p.author || "Unknown"}</span>
             </div>
-            <div style="display: flex; align-items: center;">
-              ${settingsBtn}
-              <label style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
-                <input type="checkbox" data-plugin-id="${p.id}" ${checked} style="opacity: 0; width: 0; height: 0;">
-                <span class="nekord-slider" style="position: absolute; inset: 0; background-color: ${checked ? '#23a55a' : '#80848e'}; border-radius: 24px; transition: 0.2s;">
-                  <span style="position: absolute; height: 18px; width: 18px; left: ${checked ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
-                </span>
-              </label>
-            </div>
+            <div style="color: #949ba4; font-size: 12px; margin-top: 2px;">${p.description || ""}</div>
           </div>
-        `;
-      }).join("");
-    }
+          <div style="display: flex; align-items: center;">
+            ${settingsBtn}
+            <label style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+              <input type="checkbox" data-plugin-id="${p.id}" ${checked} style="opacity: 0; width: 0; height: 0;">
+              <span class="nekord-slider" style="position: absolute; inset: 0; background-color: ${checked ? '#23a55a' : '#80848e'}; border-radius: 24px; transition: 0.2s;">
+                <span style="position: absolute; height: 18px; width: 18px; left: ${checked ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.2s;"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
 
-    const modalContent = document.createElement("div");
-    modalContent.id = "nekord-modal-container";
-    modalContent.style.cssText = `
-      background: #2b2d31 !important;
-      width: 500px !important;
-      max-width: 90% !important;
-      border-radius: 12px !important;
-      padding: 24px !important;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.5) !important;
-      color: #dbdee1 !important;
-      font-family: inherit !important;
-      pointer-events: auto !important;
-      position: relative !important;
-      z-index: 2147483647 !important;
-    `;
+  const modalContent = document.createElement("div");
+  modalContent.id = "nekord-modal-container";
+  modalContent.style.cssText = `
+    background: #2b2d31 !important;
+    width: 500px !important;
+    max-width: 90% !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.5) !important;
+    color: #dbdee1 !important;
+    font-family: inherit !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 2147483647 !important;
+  `;
 
-    modalContent.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 style="font-size: 20px; font-weight: bold; color: #fff; margin: 0;">🐾 Nekord Settings</h2>
-        <button id="nekord-close-btn" style="background: transparent; border: none; color: #949ba4; font-size: 18px; cursor: pointer; padding: 4px;">✕</button>
-      </div>
-      <p style="color: #949ba4; font-size: 13px; margin-bottom: 18px;">
-        The nekost Unofficial Discord Client configuration.
-      </p>
-      <div style="background: #1e1f22; padding: 12px 16px; border-radius: 8px; margin-bottom: 14px; max-height: 300px; overflow-y: auto;">
-        <h3 style="color: #fff; font-size: 14px; margin-bottom: 6px;">🐱 Plugins (${pluginEntries.length})</h3>
-        <div>${pluginListHtml}</div>
-      </div>
-      <div style="text-align: right;">
-        <button id="nekord-done-btn" style="background: #5865f2; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer;">Done</button>
-      </div>
-    `;
+  modalContent.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 style="font-size: 20px; font-weight: bold; color: #fff; margin: 0;">Nekord Settings</h2>
+      <button id="nekord-close-btn" style="background: transparent; border: none; color: #949ba4; font-size: 18px; cursor: pointer; padding: 4px;">✕</button>
+    </div>
+    <p style="color: #949ba4; font-size: 13px; margin-bottom: 18px;">
+      The nekost Unofficial Discord Client configuration.
+    </p>
+    <div style="background: #1e1f22; padding: 12px 16px; border-radius: 8px; margin-bottom: 14px; max-height: 300px; overflow-y: auto;">
+      <h3 style="color: #fff; font-size: 14px; margin-bottom: 6px;">Plugins (${pluginEntries.length})</h3>
+      <div>${pluginListHtml}</div>
+    </div>
+    <div style="text-align: right;">
+      <button id="nekord-done-btn" style="background: #5865f2; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer;">Done</button>
+    </div>
+  `;
 
-    overlay.appendChild(modalContent);
-    document.body.appendChild(overlay);
+  overlay.appendChild(modalContent);
+  document.body.appendChild(overlay);
 
-    const stopPropagationHandler = (e) => e.stopPropagation();
-    ["click", "mousedown", "mouseup", "pointerdown", "pointerup"].forEach(evtName => {
-      overlay.addEventListener(evtName, stopPropagationHandler);
-      modalContent.addEventListener(evtName, stopPropagationHandler);
-    });
+  const stopPropagationHandler = (e) => e.stopPropagation();
+  ["click", "mousedown", "mouseup", "pointerdown", "pointerup"].forEach(evtName => {
+    overlay.addEventListener(evtName, stopPropagationHandler);
+    modalContent.addEventListener(evtName, stopPropagationHandler);
+  });
 
-    modalContent.querySelectorAll(".nekord-plugin-cfg-btn").forEach(btn => {
-      btn.onclick = (e) => {
-        e.stopPropagation();
-        const id = btn.getAttribute("data-plugin-id");
-        const plugin = window.Nekord.plugins.get(id);
-        if (plugin && plugin.onOpenSettings) {
-          plugin.onOpenSettings();
-        }
-      };
-    });
-
-    modalContent.querySelectorAll("input[type='checkbox']").forEach(input => {
-      input.addEventListener("change", (e) => {
-        const id = e.target.getAttribute("data-plugin-id");
-        const enabled = e.target.checked;
-        window.Nekord.setPluginState(id, enabled);
-
-        const slider = e.target.nextElementSibling;
-        const knob = slider.firstElementChild;
-        slider.style.backgroundColor = enabled ? "#23a55a" : "#80848e";
-        knob.style.left = enabled ? "23px" : "3px";
-      });
-    });
-
-    const closeModal = () => overlay.remove();
-    modalContent.querySelector("#nekord-close-btn").onclick = closeModal;
-    modalContent.querySelector("#nekord-done-btn").onclick = closeModal;
-    overlay.onpointerdown = (e) => {
-      if (e.target === overlay) closeModal();
+  modalContent.querySelectorAll(".nekord-plugin-cfg-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute("data-plugin-id");
+      const plugin = window.Nekord.plugins.get(id);
+      if (plugin && plugin.onOpenSettings) {
+        plugin.onOpenSettings();
+      }
     };
+  });
+
+  modalContent.querySelectorAll("input[type='checkbox']").forEach(input => {
+    input.addEventListener("change", (e) => {
+      const id = e.target.getAttribute("data-plugin-id");
+      const enabled = e.target.checked;
+      window.Nekord.setPluginState(id, enabled);
+
+      const slider = e.target.nextElementSibling;
+      const knob = slider.firstElementChild;
+      slider.style.backgroundColor = enabled ? "#23a55a" : "#80848e";
+      knob.style.left = enabled ? "23px" : "3px";
+    });
+  });
+
+  const closeModal = () => overlay.remove();
+  modalContent.querySelector("#nekord-close-btn").onclick = closeModal;
+  modalContent.querySelector("#nekord-done-btn").onclick = closeModal;
+  overlay.onpointerdown = (e) => {
+    if (e.target === overlay) closeModal();
   };
+};
 
   // 사이드바 서브 아이템들을 동적으로 그리는 함수
   window.nekordUpdateSidebarSubItems = function () {
